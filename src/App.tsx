@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import { useForm, ValidationError } from '@formspree/react';
 import { 
   Github, 
   Linkedin, 
-  Instagram,
-  Mail,
-  ArrowUpRight,
-  Zap,
-  Layout,
-  Globe,
-  Plus,
-  Layers,
-  Sparkles,
-  ArrowLeft,
-  Flame,
-  Gamepad2,
-  Gift,
-  Code2,
-  Command
+  Instagram, 
+  Mail, 
+  ArrowUpRight, 
+  Zap, 
+  Layout, 
+  Globe, 
+  Plus, 
+  Layers, 
+  Sparkles, 
+  ArrowLeft, 
+  Flame, 
+  Gamepad2, 
+  Gift, 
+  Code2, 
+  Command,
+  User,
+  Clock,
+  DollarSign,
+  Send,
+  CheckCircle2,
+  MessageSquare,
+  Check
 } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 
@@ -278,13 +286,13 @@ const App = () => {
       </motion.div>
 
       {/* 8. ACTION FOOTER - Glass CTA */}
-      <motion.a 
-        href="https://forms.gle/sAVAkDVRzfUr3XkK9"
-        target="_blank"
-        rel="noopener noreferrer"
+      <motion.button 
+        id="book-me-cta-button"
+        type="button"
+        onClick={() => setView('booking')}
         variants={itemVariants}
         whileHover={{ scale: 1.01, backgroundColor: "rgba(249, 115, 22, 0.15)", borderColor: "rgba(249, 115, 22, 0.4)" }}
-        className="col-span-2 md:col-span-4 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 flex items-center justify-between group cursor-pointer transition-all duration-700 active:scale-[0.98] overflow-hidden relative shadow-2xl block"
+        className="col-span-2 md:col-span-4 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 flex items-center justify-between group cursor-pointer transition-all duration-700 active:scale-[0.98] overflow-hidden relative shadow-2xl text-left w-full"
       >
         <div className="flex items-center gap-4 md:gap-8 relative z-10">
           <div className="w-14 h-14 md:w-20 md:h-20 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-md group-hover:bg-white/20 transition-all border border-white/10 shadow-lg">
@@ -300,10 +308,334 @@ const App = () => {
         <div className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center border border-white/20 bg-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:shadow-[0_0_20px_#f97316] transition-all duration-500">
           <ArrowUpRight className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:text-white transition-all duration-500" />
         </div>
-      </motion.a>
+      </motion.button>
 
     </motion.div>
   );
+
+  const BookingView = () => {
+    const [state, handleSubmit] = useForm('mljrwejb');
+    const [formData, setFormData] = useState({
+      name: '',
+      email: '',
+      service: 'Frontend Web Development',
+      budget: '$1,000 – $3,000',
+      timeline: '1 – 2 Months',
+      message: '',
+    });
+    const [customReset, setCustomReset] = useState(false);
+
+    const services = [
+      'Frontend Web Development',
+      'Full-Stack Web App',
+      'UI/UX Design & Motion',
+      'Landing Page & SEO',
+      'Consultation & Review'
+    ];
+
+    const budgets = [
+      '< $1,000',
+      '$1,000 – $3,000',
+      '$3,000 – $5,000',
+      '$5,000+'
+    ];
+
+    const timelines = [
+      'Urgent (< 2 weeks)',
+      '1 – 2 Months',
+      '3+ Months',
+      'Flexible'
+    ];
+
+    const handleReset = () => {
+      setFormData({
+        name: '',
+        email: '',
+        service: 'Frontend Web Development',
+        budget: '$1,000 – $3,000',
+        timeline: '1 – 2 Months',
+        message: '',
+      });
+      setCustomReset(true);
+    };
+
+    const isSuccess = state.succeeded && !customReset;
+
+    return (
+      <motion.div
+        id="booking-view-container"
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -50 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="max-w-4xl w-full relative z-10 p-4 md:p-0"
+      >
+        {/* Navigation & Header */}
+        <div className="flex justify-between items-end mb-8 md:mb-14">
+          <div className="space-y-4">
+            <motion.button
+              id="back-to-home-from-booking"
+              whileHover={{ x: -10 }}
+              onClick={() => setView('home')}
+              className="flex items-center gap-2 text-[9px] md:text-[11px] font-black uppercase tracking-[0.5em] text-slate-500 hover:text-orange-400 transition-all group cursor-pointer"
+            >
+              <ArrowLeft size={16} className="group-hover:-translate-x-3 transition-transform" />
+              Home Directory
+            </motion.button>
+            <h2 className="text-4xl sm:text-7xl md:text-8xl font-black text-white tracking-tighter italic leading-none drop-shadow-2xl">
+              Book a Project
+            </h2>
+            <p className="text-slate-400 text-base md:text-xl font-medium max-w-xl">
+              Let's create something memorable together. Fill in your project specs below.
+            </p>
+          </div>
+        </div>
+
+        {isSuccess ? (
+          <motion.div
+            id="booking-success-card"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white/5 backdrop-blur-2xl border border-emerald-500/30 rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-14 shadow-2xl relative overflow-hidden"
+          >
+            <div className="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+              <CheckCircle2 className="w-8 h-8 md:w-10 md:h-10 text-emerald-400" />
+            </div>
+
+            <span className="text-[10px] md:text-[11px] uppercase font-black tracking-[0.4em] text-emerald-400 block mb-2">
+              Inquiry Dispatched via Formspree
+            </span>
+            <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-4">
+              Thank you{formData.name ? `, ${formData.name}` : ''}!
+            </h3>
+            <p className="text-slate-300 text-base md:text-lg leading-relaxed max-w-2xl mb-8">
+              Your project inquiry has been transmitted to my inbox. I will review the specs and get back to you {formData.email ? <>at <span className="text-orange-400 font-semibold">{formData.email}</span></> : 'promptly'} within 24 to 48 hours.
+            </p>
+
+            {/* Inquiry Summary Box */}
+            <div className="bg-black/40 border border-white/5 rounded-2xl p-6 mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">Service</span>
+                <span className="text-white text-sm font-semibold">{formData.service}</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">Budget</span>
+                <span className="text-white text-sm font-semibold">{formData.budget}</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">Timeline</span>
+                <span className="text-white text-sm font-semibold">{formData.timeline}</span>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-4 items-center">
+              <motion.button
+                id="booking-return-home-btn"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setView('home')}
+                className="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all flex items-center gap-2 cursor-pointer"
+              >
+                Return to Home
+                <ArrowUpRight size={16} />
+              </motion.button>
+              <button
+                id="booking-send-another-btn"
+                onClick={handleReset}
+                className="px-6 py-4 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/10 transition-all cursor-pointer"
+              >
+                Submit Another Request
+              </button>
+            </div>
+          </motion.div>
+        ) : (
+          <form
+            id="website-booking-form"
+            onSubmit={(e) => {
+              setCustomReset(false);
+              handleSubmit(e);
+            }}
+            className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] md:rounded-[3.5rem] p-6 md:p-12 shadow-2xl relative overflow-hidden space-y-8"
+          >
+            <div className="absolute -top-20 -right-20 w-80 h-80 bg-orange-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+            {/* Hidden Formspree Metadata Fields */}
+            <input type="hidden" name="service" value={formData.service} />
+            <input type="hidden" name="budget" value={formData.budget} />
+            <input type="hidden" name="timeline" value={formData.timeline} />
+            <input type="hidden" name="_subject" value={`New Project Inquiry: ${formData.service} (${formData.name || 'Client'})`} />
+
+            {state.errors && Object.keys(state.errors).length > 0 && (
+              <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl text-rose-300 text-sm font-medium">
+                <ValidationError errors={state.errors} />
+              </div>
+            )}
+
+            {/* Row 1: Name & Email */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="booking-name" className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                  <User size={14} className="text-orange-400" />
+                  Your Name <span className="text-orange-400">*</span>
+                </label>
+                <input
+                  id="booking-name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="e.g. Alex Morgan"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white text-base placeholder:text-slate-600 focus:outline-none focus:border-orange-500/80 focus:ring-2 focus:ring-orange-500/20 transition-all"
+                />
+                <ValidationError prefix="Name" field="name" errors={state.errors} className="text-rose-400 text-xs font-medium" />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="booking-email" className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                  <Mail size={14} className="text-orange-400" />
+                  Email Address <span className="text-orange-400">*</span>
+                </label>
+                <input
+                  id="booking-email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="alex@company.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white text-base placeholder:text-slate-600 focus:outline-none focus:border-orange-500/80 focus:ring-2 focus:ring-orange-500/20 transition-all"
+                />
+                <ValidationError prefix="Email" field="email" errors={state.errors} className="text-rose-400 text-xs font-medium" />
+              </div>
+            </div>
+
+            {/* Row 2: Service Selection */}
+            <div className="space-y-3">
+              <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                <Code2 size={14} className="text-indigo-400" />
+                Service Required
+              </label>
+              <div className="flex flex-wrap gap-2.5">
+                {services.map((svc) => (
+                  <button
+                    key={svc}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, service: svc })}
+                    className={`px-4 py-2.5 rounded-xl md:rounded-2xl text-xs md:text-sm font-semibold transition-all duration-300 border cursor-pointer ${
+                      formData.service === svc
+                        ? 'bg-orange-500 text-white border-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.35)]'
+                        : 'bg-black/40 text-slate-400 border-white/10 hover:border-white/20 hover:text-slate-200'
+                    }`}
+                  >
+                    {svc}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 3: Budget & Timeline */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                  <DollarSign size={14} className="text-emerald-400" />
+                  Estimated Budget
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {budgets.map((b) => (
+                    <button
+                      key={b}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, budget: b })}
+                      className={`px-3 py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 border text-center cursor-pointer ${
+                        formData.budget === b
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                          : 'bg-black/40 text-slate-400 border-white/10 hover:border-white/20 hover:text-slate-200'
+                      }`}
+                    >
+                      {b}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                  <Clock size={14} className="text-amber-400" />
+                  Project Timeline
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {timelines.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, timeline: t })}
+                      className={`px-3 py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 border text-center cursor-pointer ${
+                        formData.timeline === t
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.2)]'
+                          : 'bg-black/40 text-slate-400 border-white/10 hover:border-white/20 hover:text-slate-200'
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Row 4: Project Details */}
+            <div className="space-y-2">
+              <label htmlFor="booking-message" className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                <MessageSquare size={14} className="text-orange-400" />
+                Project Details & Goals <span className="text-orange-400">*</span>
+              </label>
+              <textarea
+                id="booking-message"
+                name="message"
+                required
+                rows={5}
+                placeholder="Tell me about your project goals, key features, target deadline, design inspirations or links..."
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white text-base placeholder:text-slate-600 focus:outline-none focus:border-orange-500/80 focus:ring-2 focus:ring-orange-500/20 transition-all resize-none leading-relaxed"
+              />
+              <ValidationError prefix="Message" field="message" errors={state.errors} className="text-rose-400 text-xs font-medium" />
+            </div>
+
+            {/* Row 5: Submit Actions */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-white/10">
+              <div className="text-xs text-slate-500">
+                Direct Contact: <a href="mailto:bellomonisola867@gmail.com" className="text-slate-300 hover:text-orange-400 transition-colors font-medium">bellomonisola867@gmail.com</a>
+              </div>
+
+              <motion.button
+                id="submit-booking-btn"
+                type="submit"
+                disabled={state.submitting}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-orange-500 to-rose-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer"
+              >
+                {state.submitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></div>
+                    <span>Transmitting to Formspree...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Submit Inquiry</span>
+                    <Send size={16} />
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </form>
+        )}
+      </motion.div>
+    );
+  };
 
   const ProjectsView = () => (
     <motion.div 
@@ -435,11 +767,9 @@ const App = () => {
 
       <div className="w-full flex justify-center pt-20 md:pt-0">
         <AnimatePresence mode="wait">
-          {view === 'home' ? (
-            <HomeView key="home" />
-          ) : (
-            <ProjectsView key="projects" />
-          )}
+          {view === 'home' && <HomeView key="home" />}
+          {view === 'projects' && <ProjectsView key="projects" />}
+          {view === 'booking' && <BookingView key="booking" />}
         </AnimatePresence>
       </div>
 
